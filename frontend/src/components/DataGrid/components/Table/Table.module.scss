@@ -1,0 +1,37 @@
+$tableBorder: 1px solid black;
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  th,
+  td {
+    border-right: $tableBorder;
+    border-bottom: $tableBorder;
+    padding: 5px;
+
+    &:first-child {
+      border-left: $tableBorder;
+    }
+  }
+
+  th {
+    border-top: $tableBorder;
+    background-color: #aaaaaa;
+    position: sticky;
+    top: 0;
+  }
+
+  tr:nth-child(odd) td {
+    background-color: #eeeeee;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #dddddd;
+  }
+
+  tr:hover td {
+    background-color: #cccccc;
+  }
+}

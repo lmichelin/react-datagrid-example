@@ -1,0 +1,42 @@
+.sortableTableHeader:hover {
+  background-color: #bbbbbb;
+  cursor: pointer;
+}
+
+.headerCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.sortArrows {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+%arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.arrowUp {
+  @extend %arrow;
+  border-bottom: 6px solid #666666;
+
+  &.activeArrow {
+    border-bottom-color: black;
+  }
+}
+
+.arrowDown {
+  @extend %arrow;
+  border-top: 6px solid #666666;
+
+  &.activeArrow {
+    border-top-color: black;
+  }
+}

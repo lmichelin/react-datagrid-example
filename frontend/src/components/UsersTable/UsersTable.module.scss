@@ -1,0 +1,14 @@
+.container {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.message {
+  text-align: center;
+}
+
+.usersTable {
+  min-height: 0; // https://stackoverflow.com/a/66689926
+}
