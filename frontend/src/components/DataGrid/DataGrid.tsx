@@ -6,6 +6,7 @@ import { SortedColumn } from './components/HeaderCell'
 import SearchBar from './components/SearchBar'
 import Table from './components/Table'
 import styles from './DataGrid.module.scss'
+import useInfiniteScroll from './services/useInfiniteScroll'
 
 export const getDefaultStringCompareFunction =
   <T extends string>(key: T) =>
@@ -17,11 +18,13 @@ const DataGrid = <ColumnId extends string, RowType extends Record<string, ReactN
   dataRows,
   renderCell,
   className,
+  infiniteScrollRowsNumber,
 }: {
   columns: Readonly<{ id: ColumnId; title?: string; compareFunction?: (a: RowType, b: RowType) => number }[]>
   dataRows: (RowType & { id: Key })[]
   renderCell?: (id: ColumnId, value: RowType) => ReactNode
   className?: string
+  infiniteScrollRowsNumber?: number
 }) => {
   const [searchText, setSearchText] = useState('')
   const [sortedColumn, setSortedColumn] = useState<SortedColumn>()
@@ -44,11 +47,20 @@ const DataGrid = <ColumnId extends string, RowType extends Record<string, ReactN
       : filteredData.sort(compareFunction).reverse()
   }, [dataRows, sortedColumn, indexedColumns, searchText])
 
+  const { scrollableDivRef, onScroll, rowsToDisplay } = useInfiniteScroll({
+    dataRows: fiteredAndSortedData,
+    infiniteScrollRowsNumber,
+  })
+
   return (
     <div className={clsx(styles.container, className)}>
-      <SearchBar onChange={setSearchText} resultsCount={fiteredAndSortedData.length} />
-      <div className={styles.tableContainer}>
-        <Table dataRows={fiteredAndSortedData} {...{ columns, renderCell, sortedColumn, setSortedColumn }} />
+      <SearchBar
+        onChange={setSearchText}
+        totalResultsCount={fiteredAndSortedData.length}
+        displayedResultsCount={rowsToDisplay.length}
+      />
+      <div className={styles.tableContainer} ref={scrollableDivRef} onScroll={onScroll}>
+        <Table dataRows={rowsToDisplay} {...{ columns, renderCell, sortedColumn, setSortedColumn }} />
       </div>
     </div>
   )

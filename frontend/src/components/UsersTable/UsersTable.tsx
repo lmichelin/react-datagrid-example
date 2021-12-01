@@ -39,7 +39,7 @@ const renderCell = (id: ColumnId, row: User) => {
 }
 
 const UsersTable = () => {
-  const { users, areUsersLoading, getUsersError } = useAutoGetUsers(1000)
+  const { users, areUsersLoading, getUsersError } = useAutoGetUsers(100000)
 
   return (
     <div className={styles.container}>

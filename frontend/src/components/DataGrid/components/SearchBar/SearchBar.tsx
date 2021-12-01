@@ -3,7 +3,15 @@ import styles from './SearchBar.module.scss'
 
 const DEBOUNCE_DELAY = 300 // ms
 
-const SearchBar = ({ onChange, resultsCount }: { onChange: (value: string) => void; resultsCount: number }) => {
+const SearchBar = ({
+  onChange,
+  displayedResultsCount,
+  totalResultsCount,
+}: {
+  onChange: (value: string) => void
+  totalResultsCount: number
+  displayedResultsCount: number
+}) => {
   const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
@@ -20,7 +28,8 @@ const SearchBar = ({ onChange, resultsCount }: { onChange: (value: string) => vo
         onChange={({ target }) => setSearchText(target.value)}
       />
       <span>
-        <b>{resultsCount.toLocaleString()}</b> result{resultsCount !== 1 && 's'}
+        <b>{totalResultsCount.toLocaleString()}</b> result{totalResultsCount !== 1 && 's'} •{' '}
+        <b>{displayedResultsCount.toLocaleString()}</b> displayed
       </span>
     </div>
   )
