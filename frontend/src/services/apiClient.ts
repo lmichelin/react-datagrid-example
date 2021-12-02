@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { makeUseAxios } from 'axios-hooks'
+import { useCallback } from 'react'
 import { UsersDTO } from '../types/user'
 
 const useFetch = makeUseAxios({
@@ -12,7 +13,15 @@ export const useAutoGetUsers = (limit?: number) => {
 
   if (limit !== undefined) url += `?limit=${limit}`
 
-  const [{ data, error, loading }] = useFetch<UsersDTO>(url, { manual: false })
+  const [{ data, error, loading }, doGetUsers] = useFetch<UsersDTO>(url, { manual: false })
 
-  return { users: data?.users, getUsersError: error, areUsersLoading: loading }
+  return { doGetUsers, users: data?.users, getUsersError: error, areUsersLoading: loading }
+}
+
+export const useDeleteUser = () => {
+  const [{ error, loading }, doDelete] = useFetch<void>({ method: 'DELETE' })
+
+  const doDeleteUser = useCallback((id: number) => doDelete({ url: `/users/${id}` }), [doDelete])
+
+  return { doDeleteUser, deleteUserError: error, isDeletingUser: loading }
 }
